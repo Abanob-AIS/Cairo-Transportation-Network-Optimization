@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  cairo-transport:
+    build: .
+    container_name: cairo-transport-optimizer
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app
+    environment:
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_SERVER_PORT=8501
+    restart: unless-stopped
