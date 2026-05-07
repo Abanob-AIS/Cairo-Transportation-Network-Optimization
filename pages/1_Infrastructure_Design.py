@@ -1,5 +1,13 @@
 """Page 1: Infrastructure Network Design — MST Algorithms"""
 import streamlit as st
+
+# ── Plotly interactivity config (required for Docker / containerised deployments) ──
+PLOTLY_MAP_CONFIG = {
+    "staticPlot": False,
+    "scrollZoom": True,
+    "displayModeBar": True,
+    "responsive": True,
+}
 from src.models.graph import TransportationGraph
 from src.algorithms.mst import kruskal_mst, prim_mst
 from src.visualization.network_viz import plot_mst
@@ -35,7 +43,7 @@ if algorithm in ["Both", "Kruskal's"]:
         # ✅ التعديل: توضيح أن المسافة المعروضة هي المسافة الفعلية
         st.caption("📌 **Note:** Distance shown is actual road distance (km). Route selection optimized using weighted criteria including population, facilities, condition, and construction cost (for potential roads).")
         
-        st.plotly_chart(plot_mst(kruskal_result, graph, "Kruskal's MST"), use_container_width=True)
+        st.plotly_chart(plot_mst(kruskal_result, graph, "Kruskal's MST"), use_container_width=True, config=PLOTLY_MAP_CONFIG)
 
         with st.expander("📋 MST Edges Detail"):
             for e in kruskal_result["mst_edges"]:
@@ -58,7 +66,7 @@ if algorithm in ["Both", "Prim's"]:
         # ✅ التعديل: توضيح أن المسافة المعروضة هي المسافة الفعلية
         st.caption("📌 **Note:** Distance shown is actual road distance (km). Route selection optimized using weighted criteria including population, facilities, condition, and construction cost (for potential roads).")
         
-        st.plotly_chart(plot_mst(prim_result, graph, "Prim's MST"), use_container_width=True)
+        st.plotly_chart(plot_mst(prim_result, graph, "Prim's MST"), use_container_width=True, config=PLOTLY_MAP_CONFIG)
 
         with st.expander("📋 MST Edges Detail"):
             for e in prim_result["mst_edges"]:
@@ -72,7 +80,7 @@ if algorithm == "Both":
     st.divider()
     st.markdown("### 📊 Algorithm Comparison")
     fig = plot_complexity_comparison([kruskal_result, prim_result])
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, config=PLOTLY_MAP_CONFIG)
     
     # ✅ التعديل الإضافي: توضيح الفرق بين الـ algorithms
     with st.expander("📐 Why are Kruskal and Prim results different?"):

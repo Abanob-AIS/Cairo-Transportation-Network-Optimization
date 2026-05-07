@@ -7,6 +7,16 @@ Alamein International University
 """
 import streamlit as st
 
+# ── Plotly interactivity config (required for Docker / containerised deployments) ──
+# Streamlit serves Plotly charts inside iframes. Without these flags, CORS/XSRF
+# protection in the browser can silently fall back to a static PNG snapshot.
+PLOTLY_MAP_CONFIG = {
+    "staticPlot": False,      # Never fall back to a static image
+    "scrollZoom": True,       # Allow mouse-wheel zoom on maps
+    "displayModeBar": True,   # Keep the Plotly toolbar visible
+    "responsive": True,       # Resize with the container
+}
+
 st.set_page_config(
     page_title="Cairo Transportation Optimizer",
     page_icon="🏙️",
@@ -119,7 +129,7 @@ from src.visualization.network_viz import plot_network
 
 graph = TransportationGraph(include_potential=False)
 fig = plot_network(title="Greater Cairo Transportation Network")
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, use_container_width=True, config=PLOTLY_MAP_CONFIG)
 
 # ── Population Distribution ─────────────────────────────────────────────────
 st.markdown("### 📊 Population Distribution")
@@ -139,7 +149,7 @@ pop_fig.update_layout(
     plot_bgcolor="#1a1a2e", paper_bgcolor="#16213e", font=dict(color="white"),
     height=400, xaxis=dict(tickangle=45, color="white"), yaxis=dict(color="white"),
 )
-st.plotly_chart(pop_fig, use_container_width=True)
+st.plotly_chart(pop_fig, use_container_width=True, config=PLOTLY_MAP_CONFIG)
 
 # ── Footer ──────────────────────────────────────────────────────────────────
 st.markdown("---")

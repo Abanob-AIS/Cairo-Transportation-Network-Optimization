@@ -1,5 +1,13 @@
 """Page 2: Traffic Flow Optimization — Dijkstra's Algorithm"""
 import streamlit as st
+
+# ── Plotly interactivity config (required for Docker / containerised deployments) ──
+PLOTLY_MAP_CONFIG = {
+    "staticPlot": False,
+    "scrollZoom": True,
+    "displayModeBar": True,
+    "responsive": True,
+}
 from src.models.graph import TransportationGraph
 from src.algorithms.shortest_path import dijkstra, dijkstra_time_dependent
 from src.visualization.network_viz import plot_path, plot_congestion_map
@@ -39,7 +47,7 @@ with tab1:
             path_names = " → ".join(graph.get_node_name(n) for n in result_dist["path"])
             st.info(f"**Route:** {path_names}")
             st.plotly_chart(plot_path(result_dist["path"], graph, "Shortest Distance Route", "#00E5FF"),
-                          use_container_width=True)
+                          use_container_width=True, config=PLOTLY_MAP_CONFIG)
         else:
             st.error("No path found!")
 
@@ -55,7 +63,7 @@ with tab1:
             st.info(f"**Route:** {path_names}")
             st.plotly_chart(plot_path(result_time["path"], graph,
                                      f"Fastest Route ({time_period.title()})", "#FF6B35"),
-                          use_container_width=True)
+                          use_container_width=True, config=PLOTLY_MAP_CONFIG)
         else:
             st.warning("⚠️ No valid path found between these locations due to network constraints.")
 
@@ -88,7 +96,7 @@ with tab1:
             st.metric("Travel Time", f"{closure_result['path_distance']:.1f} min")
             st.plotly_chart(plot_path(closure_result["path"], graph,
                                      "🚧 Alternate Route", "#FFC107"),
-                          use_container_width=True)
+                          use_container_width=True, config=PLOTLY_MAP_CONFIG)
         else:
             st.warning("⚠️ No valid path found between these locations due to network constraints or closures.")
 
@@ -111,7 +119,7 @@ with tab2:
     st.markdown(f"### 🌡️ Network Congestion — {TIME_PERIOD_LABELS[time_period]}")
     st.markdown("🟢 Low (<50%) &nbsp; 🟡 Moderate (50-75%) &nbsp; 🟠 High (75-90%) &nbsp; 🔴 Severe (>90%)")
     fig = plot_congestion_map(graph, time_period)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, config=PLOTLY_MAP_CONFIG)
 
 with tab3:
     st.markdown("### 📊 Traffic Flow Patterns")
@@ -120,7 +128,7 @@ with tab3:
         from_name = nodes.get(from_id, {}).get("name", from_id)
         to_name = nodes.get(to_id, {}).get("name", to_id)
         flows = [flow_data["morning"], flow_data["afternoon"], flow_data["evening"], flow_data["night"]]
-        st.plotly_chart(plot_traffic_flow(flows, f"{from_name} → {to_name}"), use_container_width=True)
+        st.plotly_chart(plot_traffic_flow(flows, f"{from_name} → {to_name}"), use_container_width=True, config=PLOTLY_MAP_CONFIG)
 
 # ── Complexity ──────────────────────────────────────────────────────────────
 st.divider()

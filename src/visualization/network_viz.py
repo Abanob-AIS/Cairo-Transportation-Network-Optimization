@@ -25,8 +25,11 @@ MARKER_SYMBOLS = {
 # Cairo center for default map view
 CAIRO_CENTER = {"lat": 30.02, "lon": 31.23}
 DEFAULT_ZOOM = 9.5
-MAP_STYLE = "carto-darkmatter"
+#MAP_STYLE = "carto-darkmatter"
+MAP_STYLE = "carto-positron"
+# MAP_STYLE = "open-street-map" 
 
+# MAPBOX_TOKEN = "pk.eyJ1IjoiYWJhbm9iMjg1IiwiYSI6ImNtb3VrbXZsZzBnMzgydHNoYm1jbGt2aTQifQ.TkbGrP6Zw14DFsK2LlVOeg"
 
 def _base_layout(title="", zoom=DEFAULT_ZOOM, center=None):
     """Shared Mapbox layout for every map in the project."""
@@ -40,6 +43,7 @@ def _base_layout(title="", zoom=DEFAULT_ZOOM, center=None):
         font=dict(color="white"),
         legend=dict(font=dict(color="white"), bgcolor="rgba(0,0,0,0.5)"),
         mapbox=dict(
+         #   accesstoken=MAPBOX_TOKEN,
             style=MAP_STYLE,
             center=center,
             zoom=zoom,

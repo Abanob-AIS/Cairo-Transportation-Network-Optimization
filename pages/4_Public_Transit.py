@@ -1,5 +1,13 @@
 """Page 4: Public Transit Optimization — Dynamic Programming"""
 import streamlit as st
+
+# ── Plotly interactivity config (required for Docker / containerised deployments) ──
+PLOTLY_MAP_CONFIG = {
+    "staticPlot": False,
+    "scrollZoom": True,
+    "displayModeBar": True,
+    "responsive": True,
+}
 import math
 from src.algorithms.dynamic_programming import (
     optimize_public_transit_scheduling, road_maintenance_allocation, MemoizedRoutePlanner, analyze_transfer_points
@@ -55,7 +63,7 @@ with tab1:
     bus_alloc = {k: v for k, v in result["optimal_allocation"].items() if v["type"] == "Bus"}
     metro_alloc = {k: v for k, v in result["optimal_allocation"].items() if v["type"] == "Metro"}
 
-    st.plotly_chart(plot_bus_allocation(result["optimal_allocation"]), use_container_width=True)
+    st.plotly_chart(plot_bus_allocation(result["optimal_allocation"]), use_container_width=True, config=PLOTLY_MAP_CONFIG)
 
     with st.expander("🚌 Bus Route Allocation Detail"):
         for rid, data in bus_alloc.items():
@@ -152,7 +160,7 @@ with tab2:
         st.caption(f"{percent_used:.0f}% of budget allocated")
 
     # Allocation Chart
-    st.plotly_chart(plot_maintenance_allocation(maint_result["allocations"]), use_container_width=True)
+    st.plotly_chart(plot_maintenance_allocation(maint_result["allocations"]), use_container_width=True, config=PLOTLY_MAP_CONFIG)
 
     # Before/After Condition Comparison
     if maint_result["allocations"]:

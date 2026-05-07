@@ -1,5 +1,13 @@
 """Page 3: Emergency Response Planning — A* Search"""
 import streamlit as st
+
+# ── Plotly interactivity config (required for Docker / containerised deployments) ──
+PLOTLY_MAP_CONFIG = {
+    "staticPlot": False,
+    "scrollZoom": True,
+    "displayModeBar": True,
+    "responsive": True,
+}
 from src.models.graph import TransportationGraph
 from src.algorithms.shortest_path import astar_search, dijkstra_time_dependent, compare_algorithms
 from src.algorithms.greedy import emergency_vehicle_preemption
@@ -44,7 +52,7 @@ with tab1:
             path_names = " → ".join(graph.get_node_name(n) for n in astar_em["path"])
             st.success(f"**Emergency Route:** {path_names}")
             st.plotly_chart(plot_emergency_route(astar_em["path"], graph, "🚑 Emergency Route"),
-                          use_container_width=True)
+                          use_container_width=True, config=PLOTLY_MAP_CONFIG)
         else:
             st.error("No route found!")
 
@@ -58,7 +66,7 @@ with tab1:
             path_names = " → ".join(graph.get_node_name(n) for n in astar_normal["path"])
             st.info(f"**Normal Route:** {path_names}")
             st.plotly_chart(plot_path(astar_normal["path"], graph, "Normal Route", "#FFB74D"),
-                          use_container_width=True)
+                          use_container_width=True, config=PLOTLY_MAP_CONFIG)
         else:
             st.error("No route found!")
 
@@ -80,7 +88,7 @@ with tab2:
     col3.metric("Nodes Saved by A*", saved, delta=f"{saved} fewer")
 
     fig = plot_algorithm_race(dij, ast, graph)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, config=PLOTLY_MAP_CONFIG)
 
     st.markdown("""
     **Why A* is faster:** The Haversine heuristic guides search toward the target,
