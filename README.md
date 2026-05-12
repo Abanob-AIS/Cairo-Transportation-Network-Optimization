@@ -4,6 +4,10 @@
 > **CSE112 — Design and Analysis of Algorithms**  
 > Alamein International University
 
+Live Demo: https://drive.google.com/file/d/18Xa98gIur07AksCTmxPRy4EbjpIpXWBE/view?usp=sharing
+Hugging Face Demo: https://huggingface.co/spaces/Abanob-AIS/cairo-network
+
+
 ## 📋 Overview
 
 A comprehensive transportation management system for the Greater Cairo metropolitan area that implements and integrates multiple algorithmic concepts to analyze, optimize, and manage urban transportation challenges including traffic congestion, infrastructure development, and public transit optimization.
